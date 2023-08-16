@@ -12,10 +12,22 @@ const WorkoutForm = () => {
 
   const [error, setError] = useState(null);
 
+  // Handle Submit - Post request to our workout end point
+  // prevent the default form button behaviour
+  // data - create an object called workout and pass our state values into it
+  // axios - send the data object up as the request payload
+  // header - tells the server we are using JSON data
+  // set error state - so we can show error to user later on
+  // reset the values of the form if the request is successful
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const workout = { title, load, reps };
+    const user = JSON.parse(localStorage.getItem("user"));
+    const user_id = user.email;
+
+    // data object to send as payload
+    const workout = { title, load, reps, user_id };
     try {
       const response = await axios.post(
         "http://localhost:4000/api/workouts",

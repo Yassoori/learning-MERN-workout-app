@@ -107,6 +107,10 @@ const WorkoutDetails = ({ workout }) => {
               { addSuffix: true }
             )}
           </p>
+          <p>
+            <strong>Created by:</strong>
+            {workout.user_id}
+          </p>
           <span onClick={handleDelete} className="delete">
             <i className="fa-solid fa-trash"></i>
           </span>
