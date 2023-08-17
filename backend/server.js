@@ -19,6 +19,8 @@ const userRoutes = require("./routes/user");
 // Attach our Route to our app (express)
 app.use("/api/workouts/", workoutRoutes);
 app.use("/api/user", userRoutes);
+// Serve static file from public/uploads
+app.use("/public/uploads", express.static("/public/uploads"));
 
 // log out the path and the method of each request
 app.use((req, res, next) => {

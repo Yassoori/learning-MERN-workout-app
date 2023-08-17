@@ -29,6 +29,11 @@ const workoutSchema = new Schema(
     //   type: String,
     //   ref: "User"
     // }
+    image: {
+      type: String,
+      default: null,
+      // setting the defalt to a placeholder would be good too
+    },
   },
   { timestamps: true }
 );

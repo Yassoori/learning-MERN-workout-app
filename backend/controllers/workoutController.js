@@ -1,3 +1,4 @@
+const { response } = require("express");
 const Workout = require("../models/workoutModel"); // Workout Model
 
 //import mongoose
@@ -35,9 +36,17 @@ const getWorkout = async (req, res) => {
 const createWorkout = async (req, res) => {
   const { title, load, reps, user_id } = req.body;
 
+  const imageFileName = req.file ? req.file.filename : null;
+
   // add doc to db
   try {
-    const workout = await Workout.create({ title, load, reps, user_id });
+    const workout = await Workout.create({
+      title,
+      load,
+      reps,
+      user_id,
+      image: imageFileName,
+    });
     res.status(200).json(workout);
   } catch (error) {
     res.status(400).json({ error: error.message });

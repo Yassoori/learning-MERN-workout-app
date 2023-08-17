@@ -5,12 +5,15 @@ import { useWorkoutContext } from "../hooks/useWorkoutsContext";
 const WorkoutForm = () => {
   // Bring in dispatch
   const { dispatch } = useWorkoutContext();
+
   // States
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
-
+  // set an error state
   const [error, setError] = useState(null);
+  // set state for image uplaod
+  const [image, setImage] = useState(null);
 
   // Handle Submit - Post request to our workout end point
   // prevent the default form button behaviour
@@ -27,13 +30,24 @@ const WorkoutForm = () => {
     const user_id = user.email;
 
     // data object to send as payload
-    const workout = { title, load, reps, user_id };
+    // const workout = { title, load, reps, user_id };
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("load", load);
+    formData.append("reps", reps);
+    formData.append("user_id", user_id);
+    formData.append("image", image);
+
     try {
       const response = await axios.post(
         "http://localhost:4000/api/workouts",
-        workout,
+        formData,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            // "Content-Type": "application/json"
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       setTitle("");
@@ -43,7 +57,8 @@ const WorkoutForm = () => {
       console.log("new workout added", response.data);
       dispatch({ type: "CREATE_WORKOUTS", payload: response.data });
     } catch (error) {
-      console.error(error), setError(error.message);
+      console.error(error);
+      setError(error.message);
     }
   };
 
@@ -67,6 +82,13 @@ const WorkoutForm = () => {
         onChange={(e) => setReps(e.target.value)}
         value={reps}
         placeholder="Reps"
+      />
+      <label>Upload Image:</label>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setImage(e.target.files[0])}
+        // placeholder="Upload Image"
       />
       <button>Add Workout</button>
       {error && <div className="error">{error}</div>}

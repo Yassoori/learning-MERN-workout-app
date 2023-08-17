@@ -63,6 +63,10 @@ const WorkoutDetails = ({ workout }) => {
     }
   };
 
+  // im guessing
+  const user = JSON.parse(localStorage.getItem("user"));
+  const user_id = user.email;
+
   return (
     <div className="workout-details">
       {isEditing ? (
@@ -92,6 +96,13 @@ const WorkoutDetails = ({ workout }) => {
       ) : (
         <>
           <h4>{workout.title}</h4>
+          {workout.image && (
+            <img
+              className="workout-image"
+              src={`http://localhost:4000/public/uploads/${workout.imgae}`}
+              alt={workout.title}
+            />
+          )}
           <p>
             <strong>Load (kg): </strong>
             {workout.load}
@@ -105,18 +116,23 @@ const WorkoutDetails = ({ workout }) => {
               new Date(workout.createdAt),
               { includeSeconds: true },
               { addSuffix: true }
-            )}
+            )}{" "}
+            ago
           </p>
           <p>
             <strong>Created by:</strong>
             {workout.user_id}
           </p>
-          <span onClick={handleDelete} className="delete">
-            <i className="fa-solid fa-trash"></i>
-          </span>
-          <span onClick={handleEdit} className="edit">
-            <i className="fa-solid fa-pen"></i>
-          </span>
+          {user_id === workout.user_id && (
+            <div>
+              <span onClick={handleDelete} className="delete">
+                <i className="fa-solid fa-trash"></i>
+              </span>
+              <span onClick={handleEdit} className="edit">
+                <i className="fa-solid fa-pen"></i>
+              </span>
+            </div>
+          )}
         </>
       )}
     </div>
