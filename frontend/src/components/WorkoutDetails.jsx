@@ -3,10 +3,17 @@ import axios from "axios";
 import { useWorkoutContext } from "../hooks/useWorkoutsContext";
 //import of date-fns
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { useNavigate } from "react-router-dom";
 
 const WorkoutDetails = ({ workout }) => {
   // bring in dispatch method
   const { dispatch } = useWorkoutContext();
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    let path = `/${workout._id}`;
+    navigate(path);
+  };
 
   const [isEditing, setIsEditing] = useState(false);
   // state for our edit form
@@ -133,6 +140,7 @@ const WorkoutDetails = ({ workout }) => {
               </span>
             </div>
           )}
+          <button onClick={handleNavigate}>Read More</button>
         </>
       )}
     </div>
